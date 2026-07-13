@@ -5,7 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <title>図書館SQL体験｜4つのマスタ</title>
+  <link rel="stylesheet" href="./style.css"><!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>図書館SQL体験｜4つのマスタ</title>
   <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="page">
+    <section class="workspace">
+      <section class="card sqlCard">
+        <h1>図書館SQL体験</h1>
+        <p class="lead">4つの表から、必要な行と列をSQLで取り出します。</p>
+
+        <label for="sqlInput" class="label">SQL入力</label>
+        <textarea id="sqlInput" spellcheck="false" aria-label="SQL入力欄"></textarea>
+
+        <p class="help">SQLを入力して実行します。</p>
+
+        <div class="buttonRow">
+          <button id="runBtn" type="button" class="primary">実行</button>
+          <button id="resetBtn" type="button" class="secondary">初期SQLに戻す</button>
+          <button id="sampleBtn" type="button" class="secondary">問2のヒント</button>
+          <button id="joinBtn" type="button" class="secondary">結合の例</button>
+        </div>
+
+        <div id="message" class="message" aria-live="polite"></div>
+
+        <section class="resultArea">
+          <h2>検索結果</h2>
+          <p id="resultSummary" class="help">まだ実行していません。</p>
+          <div id="resultTableWrap"></div>
+        </section>
+      </section>
+
+      <section class="card sourceCard">
+        <div class="sourceHeader">
+          <h2>元データ</h2>
+          <span class="countBadge">書籍 n = 20</span>
+        </div>
+        <p class="help">蔵書・書籍・著者・分類を別々の表に保存しています。枠内をスクロールして確認できます。</p>
+        <div class="dataNote">
+          ISBN・発売日・書籍コードは新潮社公式情報と照合。登録日は、この教材データベースへの登録日です。
+        </div>
+        <div id="sourceTables" class="sourceTables"></div>
+      </section>
+    </section>
+
+    <section class="card notesCard">
+      <h2>授業の要点</h2>
+      <ul>
+        <li><strong>選択</strong>：条件に合う行を取り出す</li>
+        <li><strong>射影</strong>：必要な列だけを取り出す</li>
+        <li><strong>結合</strong>：共通するコードで表をつなぐ</li>
+        <li><strong>分けるから、つなげられる。</strong></li>
+      </ul>
+    </section>
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/alasql@4.17.3/dist/alasql.min.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
+
 </head>
 <body>
   <main class="page">
