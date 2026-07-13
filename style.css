@@ -1,0 +1,185 @@
+* { box-sizing: border-box; }
+:root {
+  --navy: #17324d;
+  --teal: #0f766e;
+  --blue: #2563eb;
+  --muted: #5f6f7f;
+  --line: #d9e2ec;
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --green: #e8f7f3;
+  --bluebg: #eef4ff;
+  --amberbg: #fff7e8;
+  --redbg: #fff1f2;
+  --red: #be123c;
+}
+html, body { margin: 0; min-height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--navy);
+  font-family: "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  font-size: 17px;
+}
+.page {
+  width: min(1450px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 14px 0 24px;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(500px, 0.92fr);
+  gap: 14px;
+  align-items: start;
+}
+.card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 3px 12px rgba(23,50,77,.05);
+}
+h1 { margin: 0 0 5px; font-size: 2rem; line-height: 1.2; }
+h2 { margin: 0 0 9px; font-size: 1.35rem; }
+.lead, .help { color: var(--muted); margin: 6px 0 9px; }
+.label { display: block; margin: 11px 0 6px; font-weight: 800; }
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 138px;
+  max-height: 210px;
+  resize: vertical;
+  border: 2px solid #c7d7ef;
+  border-radius: 12px;
+  padding: 14px;
+  font-family: "SFMono-Regular", "Consolas", "Menlo", monospace;
+  font-size: 19px;
+  line-height: 1.5;
+  color: #101827;
+  background: #fbfdff;
+}
+code {
+  padding: 2px 7px;
+  border-radius: 7px;
+  background: var(--bluebg);
+  font-family: "SFMono-Regular", "Consolas", monospace;
+}
+.buttonRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+button {
+  border: 2px solid #a8bad2;
+  border-radius: 10px;
+  padding: 9px 15px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  background: white;
+  color: var(--navy);
+}
+button.primary { background: var(--blue); border-color: var(--blue); color: white; }
+button:focus { outline: 3px solid #bfdbfe; outline-offset: 2px; }
+.message {
+  margin-top: 11px;
+  min-height: 40px;
+  border-radius: 12px;
+  padding: 9px 12px;
+  background: var(--bluebg);
+  color: var(--navy);
+  font-weight: 700;
+}
+.message.success { background: var(--green); color: var(--teal); }
+.message.error { background: var(--redbg); color: var(--red); }
+.resultArea {
+  margin-top: 11px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line);
+}
+.sourceHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.countBadge {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--teal);
+  font-weight: 800;
+  font-size: .88rem;
+}
+.dataNote {
+  margin: 8px 0 12px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: var(--amberbg);
+  color: #79520c;
+  font-size: .88rem;
+  line-height: 1.45;
+}
+.tableWrap {
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+th, td {
+  padding: 7px 9px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th:last-child, td:last-child { border-right: 0; }
+tr:last-child td { border-bottom: 0; }
+th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #eaf1fb;
+  font-weight: 800;
+}
+caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 800;
+  padding: 0 0 7px;
+}
+.sourceTables {
+  max-height: 575px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  scrollbar-gutter: stable;
+}
+.sourceBlock {
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #fbfdff;
+}
+.sourceBlock + .sourceBlock { margin-top: 14px; }
+.sourceBlock h3 {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  margin: -2px 0 8px;
+  padding: 4px 0;
+  font-size: 1.03rem;
+  background: #fbfdff;
+}
+.sourceBlock .tableWrap { max-height: 255px; }
+#resultTableWrap .tableWrap { max-height: 250px; }
+.notesCard { margin-top: 13px; padding: 11px 16px; }
+.notesCard ul { display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 0; padding-left: 20px; }
+@media (max-width: 980px) {
+  .workspace { grid-template-columns: 1fr; }
+  .sourceTables { max-height: 430px; }
+}
+@media (max-width: 600px) {
+  .page { width: min(100% - 16px, 1450px); }
+  .card { padding: 12px; }
+  h1 { font-size: 1.65rem; }
+  textarea { font-size: 16px; }
+}
