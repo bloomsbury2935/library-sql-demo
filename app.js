@@ -21,6 +21,15 @@
     "  ON b.[分類コード] = c.[分類コード]\n" +
     "WHERE b.[分類コード] = 910;";
 
+  var TASK_C_SQL =
+    "SELECT b.[?], b.[?], c.[分類名]\n" +
+    "FROM [書籍マスタ] AS b\n" +
+    "JOIN [著者マスタ] AS a\n" +
+    "  ON b.[著者コード] = a.[著者コード]\n" +
+    "JOIN [分類マスタ] AS c\n" +
+    "  ON b.[分類コード] = c.[分類コード]\n" +
+    "WHERE a.[?] = '?';";
+
   /*
    * 書籍マスタ:
    * ISBN, 書籍名, 著者コード, 分類コード, 出版社, 発売日, C-CODE
@@ -101,6 +110,7 @@
   var resetBtn;
   var sampleBtn;
   var joinBtn;
+  var task3Btn;
   var message;
   var sourceTables;
   var resultTableWrap;
@@ -143,33 +153,31 @@
     var clean;
     var statementMatch;
     var statementType;
-    var tablePattern =
-      "(?:書籍マスタ|著者マスタ|蔵書マスタ|分類マスタ)";
+    var tablePattern = "(?:書籍マスタ|著者マスタ|蔵書マスタ|分類マスタ)";
     var tableCheck;
 
     if (!sql) {
-      return {
-        ok: false,
-        message: "SQLが空です。まずは初期SQLを実行しましょう。"
-      };
+      return { ok: false, message: "SQLが空です。まずは初期SQLを実行しましょう。" };
     }
-
     if (!hasSingleStatement(sql)) {
-      return {
-        ok: false,
-        message: "複数の文は実行できません。SQLは1文だけにしてください。"
-      };
+      return { ok: false, message: "複数の文は実行できません。SQLは1文だけにしてください。" };
     }
 
     clean = sql.replace(/;\s*$/, "");
+
+    if (/\?/.test(clean)) {
+      return {
+        ok: false,
+        message: "「?」を適切なフィールド名や値に置き換えてから実行してください。"
+      };
+    }
 
     statementMatch = /^(select|insert|update|delete)\b/i.exec(clean);
 
     if (!statementMatch) {
       return {
         ok: false,
-        message:
-          "この教材ではSELECT・INSERT・UPDATE・DELETEを実行できます。"
+        message: "この教材ではSELECT・INSERT・UPDATE・DELETEを実行できます。"
       };
     }
 
@@ -204,17 +212,11 @@
     if (!tableCheck.test(clean)) {
       return {
         ok: false,
-        message:
-          "書籍マスタ・著者マスタ・蔵書マスタ・分類マスタの" +
-          "いずれかを指定してください。"
+        message: "書籍マスタ・著者マスタ・蔵書マスタ・分類マスタのいずれかを指定してください。"
       };
     }
 
-    return {
-      ok: true,
-      sql: clean,
-      type: statementType
-    };
+    return { ok: true, sql: clean, type: statementType };
   }
 
   function createTable(name, columns) {
@@ -339,35 +341,26 @@
 
       if (validation.type === "select") {
         renderTable(resultTableWrap, "検索結果", result);
-        resultSummary.textContent =
-          result.length + "件のデータが見つかりました。";
+        resultSummary.textContent = result.length + "件のデータが見つかりました。";
         setMessage("SQLを実行しました。", "success");
       } else {
         renderSourceTables();
-
-        affectedRows =
-          typeof result === "number" ? result : null;
+        affectedRows = typeof result === "number" ? result : null;
 
         if (affectedRows === null) {
           resultSummary.textContent = "データを変更しました。";
         } else {
-          resultSummary.textContent =
-            affectedRows + "件のデータを変更しました。";
+          resultSummary.textContent = affectedRows + "件のデータを変更しました。";
         }
 
         resultTableWrap.innerHTML = "";
-
         setMessage(
-          "SQLを実行し、元データを更新しました。" +
-          "ページを再読み込みすると初期状態に戻ります。",
+          "SQLを実行し、元データを更新しました。ページを再読み込みすると初期状態に戻ります。",
           "success"
         );
       }
 
-      resultSummary.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
-      });
+      resultSummary.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (err) {
       resultSummary.textContent = "エラーが発生しました。";
       resultTableWrap.innerHTML = "";
@@ -390,11 +383,20 @@
     setMessage("書籍・著者・分類の3表を結合する例を入れました。", "success");
   }
 
+  function setTask3Sql() {
+    sqlInput.value = TASK_C_SQL;
+    setMessage(
+      "「?」を適切なフィールド名と検索する値に置き換えましょう。JOIN句とON句は変更しません。",
+      "success"
+    );
+  }
+
   function bindEvents() {
     runBtn.addEventListener("click", runCurrentSql);
     resetBtn.addEventListener("click", resetSql);
     sampleBtn.addEventListener("click", setSampleSql);
     joinBtn.addEventListener("click", setJoinSql);
+    task3Btn.addEventListener("click", setTask3Sql);
     sqlInput.addEventListener("keydown", function (event) {
       if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
         runCurrentSql();
@@ -415,6 +417,7 @@
     resetBtn = byId("resetBtn");
     sampleBtn = byId("sampleBtn");
     joinBtn = byId("joinBtn");
+    task3Btn = byId("task3Btn");
     message = byId("message");
     sourceTables = byId("sourceTables");
     resultTableWrap = byId("resultTableWrap");
